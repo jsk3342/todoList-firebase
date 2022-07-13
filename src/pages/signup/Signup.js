@@ -6,7 +6,8 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [displayName, setDisplayName] = useState('');
-    const {error, isPending, signup} = useSignup();
+    const { error, isPending, signup } = useSignup();
+
 
     const handleData = (event) => {
         if (event.target.type === "email") {

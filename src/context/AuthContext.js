@@ -1,4 +1,5 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
+import { appAuth } from "../firebase/config";
 
 const AuthContext = createContext();
 
@@ -19,8 +20,17 @@ const AuthContextProvider = ({ children }) => {
     // dispatch : authReducer 함수를 호출합니다. action 인자를 사용합니다.
     // action : authReducer 함수에서 사용할 수 있는 type, payload 값을 dispatch함수에 전달합니다. 
     const [state, dispatch] = useReducer(authReducer, {
-        user: null
+        user: null,
+        isAuthReady: false,
     })
+
+    useEffect(() => {
+        const unsubscribe = appAuth.onAuthStateChanged(function(user) {
+            dispatch({ type:'authIsReady', payload: user })
+            unsubscribe();
+        })
+    })
+
 
     // prvider는 value를 통해서 값을 공유합니다. 
     // dispatch 함수를 전달하여 다른 훅이나 컴포넌트에서도 user state 값을 업데이트 할 수 있게 만들어 줍니다.
